@@ -61,6 +61,11 @@ namespace TrickSaber::Tricks {
         il2cpp_utils::RunMethod(this, "OnInit");
     }
 
+    void TrickFactory::ctor() {
+        DEBUG("ctor");
+        ::custom_types::InvokeBaseCtor(classof(Trick_PlaceholderFactory_Base*), this);
+    }
+
     void TrickCustomFactory::ctor(::Zenject::DiContainer* container) {
         DEBUG("ctor");
         _container = container;

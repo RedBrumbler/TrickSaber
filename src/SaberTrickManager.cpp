@@ -15,7 +15,18 @@ DEFINE_TYPE(TrickSaber, LeftSaberTrickManager);
 DEFINE_TYPE(TrickSaber, RightSaberTrickManager);
 
 namespace TrickSaber {
+    void LeftSaberTrickManager::ctor() {
+        DEBUG("LeftSaberTrickManager ctor");
+        custom_types::InvokeBaseCtor(classof(SaberTrickManager*), this);
+    }
+    
+    void RightSaberTrickManager::ctor() {
+        DEBUG("RightSaberTrickManager ctor");
+        custom_types::InvokeBaseCtor(classof(SaberTrickManager*), this);
+    }
+    
     void SaberTrickManager::ctor() {
+        DEBUG("ctor");
         _tricks = TrickDictionary::New_ctor();
         _managerEnabled = true;
     }

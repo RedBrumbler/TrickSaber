@@ -55,7 +55,7 @@ DECLARE_CLASS_CODEGEN(TrickSaber::Tricks, Trick, UnityEngine::MonoBehaviour,
 using Trick_PlaceholderFactory_Base = ::Zenject::PlaceholderFactory_3<::System::Type*, ::UnityEngine::GameObject*, ::TrickSaber::Tricks::Trick*>;
 
 DECLARE_CLASS_CODEGEN(TrickSaber::Tricks, TrickFactory, Trick_PlaceholderFactory_Base, 
-    DECLARE_DEFAULT_CTOR();
+    DECLARE_CTOR(ctor);
 )
 
 using Trick_CustomFactory_Base = ::Zenject::IFactory_3<::System::Type*, ::UnityEngine::GameObject*, ::TrickSaber::Tricks::Trick*>;

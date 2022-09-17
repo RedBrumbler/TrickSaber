@@ -34,15 +34,16 @@ namespace TrickSaber::Installers {
         container->Bind<MovementController*>()->FromNewComponentSibling()->AsTransient();
         container->Bind<InputHandling::InputManager*>()->AsTransient();
 
-        auto factoryBind = container->BindFactory<System::Type*, UnityEngine::GameObject*, Tricks::Trick*, Tricks::TrickFactory*>();
-        /*
+        DEBUG("FactoryBind");
+        auto factoryBind = container->BindIFactory<System::Type*, UnityEngine::GameObject*, Tricks::Trick*>();
         static auto minfo = il2cpp_utils::FindMethod(factoryBind, "FromFactory");
         DEBUG("found minfo: {}", fmt::ptr(minfo));
         static auto fromFactoryMinfo = il2cpp_utils::MakeGenericMethod(minfo, std::vector<Il2CppClass*>{classof(Tricks::TrickCustomFactory*)});
         DEBUG("created fromFactoryMinfo: {}", fmt::ptr(fromFactoryMinfo));
         il2cpp_utils::RunMethod(factoryBind, fromFactoryMinfo);
-        */
-        factoryBind->FromFactory<Tricks::TrickCustomFactory*>();
+        //DEBUG("FromFactory");
+        //factoryBind->FromFactory<Tricks::TrickCustomFactory*>();
+        DEBUG("Bind bearer");
         container->Bind<SaberControllerBearer*>()->AsSingle();
 
         //TODO: make SaberTrickManagers non-Monobehaviours

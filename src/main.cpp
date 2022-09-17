@@ -9,6 +9,24 @@
 #include "Installers/AppInstaller.hpp"
 #include "Installers/MenuInstaller.hpp"
 
+#include "System/ArgumentNullException.hpp"
+
+MAKE_AUTO_HOOK_FIND_INSTANCE(ArgumentNullException_ctor_0, classof(System::ArgumentNullException*), ".ctor", void, System::ArgumentNullException* self) {
+    ERROR("Argument Null exception");
+    ArgumentNullException_ctor_0(self);
+}
+
+MAKE_AUTO_HOOK_FIND_INSTANCE(ArgumentNullException_ctor_1, classof(System::ArgumentNullException*), ".ctor", void, System::ArgumentNullException* self, StringW paramName) {
+    ERROR("Argument Null exception for param {}", paramName);
+    getLogger().Backtrace(123);
+    ArgumentNullException_ctor_1(self, paramName);
+}
+
+MAKE_AUTO_HOOK_FIND_INSTANCE(ArgumentNullException_ctor_2, classof(System::ArgumentNullException*), ".ctor", void, System::ArgumentNullException* self, StringW paramName, StringW message) {
+    ERROR("Argument Null exception for param {}: {}", paramName, message);
+    ArgumentNullException_ctor_2(self, paramName, message);
+}
+
 ModInfo modInfo{MOD_ID, VERSION};
 
 extern "C" void setup(ModInfo& info) {

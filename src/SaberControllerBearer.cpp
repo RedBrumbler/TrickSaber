@@ -1,10 +1,12 @@
 #include "SaberControllerBearer.hpp"
+#include "logging.hpp"
 
 DEFINE_TYPE(TrickSaber, SaberControllerPackage);
 DEFINE_TYPE(TrickSaber, SaberControllerBearer);
 
 namespace TrickSaber {
     void SaberControllerPackage::ctor(GlobalNamespace::Saber* saber, GlobalNamespace::VRController* vrController) {
+        DEBUG("ctor");
         this->saber = saber;
         this->vrController = vrController;
     }
