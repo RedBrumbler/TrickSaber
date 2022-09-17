@@ -66,11 +66,13 @@ DECLARE_CLASS_CODEGEN(TrickSaber, SaberTrickManager, UnityEngine::MonoBehaviour,
         void AddTrick(System::Type* type);
 )
 
-DECLARE_CLASS_CODEGEN(TrickSaber, LeftSaberTrickManager, TrickSaber::SaberTrickManager,
+// named type because inject with ID is stupid
+DECLARE_CLASS_CUSTOM(TrickSaber, LeftSaberTrickManager, TrickSaber::SaberTrickManager,
     DECLARE_DEFAULT_CTOR();
 )
 
-DECLARE_CLASS_CODEGEN(TrickSaber, RightSaberTrickManager, TrickSaber::SaberTrickManager,
+// named type because inject with ID is stupid
+DECLARE_CLASS_CUSTOM(TrickSaber, RightSaberTrickManager, TrickSaber::SaberTrickManager,
     DECLARE_DEFAULT_CTOR();
 )
 
