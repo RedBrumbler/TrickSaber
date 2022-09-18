@@ -21,14 +21,13 @@ DECLARE_CLASS_CODEGEN_INTERFACES(TrickSaber, GlobalTrickManager, Il2CppObject, c
     DECLARE_INSTANCE_METHOD(UnityEngine::AudioSource*, get_audioSource);
 
     DECLARE_INSTANCE_FIELD(GlobalNamespace::BeatmapObjectManager*, beatmapObjectManager);
-    DECLARE_INJECT_FIELD(LeftSaberTrickManager*, leftSaberTrickManager);
-    DECLARE_INJECT_FIELD(RightSaberTrickManager*, rightSaberTrickManager);
+    DECLARE_INSTANCE_FIELD(LeftSaberTrickManager*, leftSaberTrickManager);
+    DECLARE_INSTANCE_FIELD(RightSaberTrickManager*, rightSaberTrickManager);
 
     DECLARE_INSTANCE_METHOD(bool, get_enabled);
     DECLARE_INSTANCE_METHOD(void, set_enabled, bool value);
     DECLARE_INSTANCE_FIELD(bool, saberClashCheckerEnabled);
 
-    DECLARE_INJECT_FIELD_OPTIONAL(GlobalNamespace::MultiplayerPlayersManager*, multiplayerPlayersManager);
     DECLARE_PRIVATE_FIELD(GlobalNamespace::IDifficultyBeatmap*, _iDifficultyBeatmap);
     DECLARE_PRIVATE_FIELD(GlobalNamespace::AudioTimeSyncController*, _audioTimeSyncController);
     DECLARE_PRIVATE_FIELD(float, _slowmoStepAmount);
@@ -51,7 +50,7 @@ DECLARE_CLASS_CODEGEN_INTERFACES(TrickSaber, GlobalTrickManager, Il2CppObject, c
     DECLARE_INSTANCE_METHOD(bool, IsDoingTrick);
 
 
-    DECLARE_CTOR(ctor, GlobalNamespace::AudioTimeSyncController* audioTimeSyncController, GlobalNamespace::GameplayCoreSceneSetupData* gameplayCoreSceneSetup);
+    DECLARE_CTOR(ctor, ::Zenject::DiContainer* container, GlobalNamespace::AudioTimeSyncController* audioTimeSyncController, GlobalNamespace::GameplayCoreSceneSetupData* gameplayCoreSceneSetup, LeftSaberTrickManager* leftSaberTrickManager, RightSaberTrickManager* rightSaberTrickManager);
 
     private:
         custom_types::Helpers::Coroutine ApplySlowmoSmooth(float amount, float originalTimescale);

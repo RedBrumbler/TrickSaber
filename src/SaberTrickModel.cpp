@@ -5,11 +5,12 @@
 DEFINE_TYPE(TrickSaber, SaberTrickModel);
 
 namespace TrickSaber {
-    void SaberTrickModel::Inject(Lapiz::Sabers::LapizSaberFactory* lapizSaberFactory, GlobalNamespace::ColorManager* colorManager) {
+    void SaberTrickModel::Inject(::Zenject::DiContainer* container, Lapiz::Sabers::LapizSaberFactory* lapizSaberFactory, Lapiz::Sabers::SaberModelManager* saberModelManager, GlobalNamespace::ColorManager* colorManager) {
         _saberFactory = lapizSaberFactory;
+        _saberModelManager = saberModelManager;
         _colorManager = colorManager;
 
-        _isMultiplayer = _multiplayerPlayersManager;
+        _isMultiplayer = container->TryResolve<GlobalNamespace::MultiplayerPlayersManager*>();
     }
 
     void SaberTrickModel::ChangeToActualSaber() {
@@ -33,9 +34,11 @@ namespace TrickSaber {
         _rigidbody->set_interpolation(TrickSaber::RigidbodyInterpolation::Interpolate);
     }
 
+    // TODO: asyncify like PC
     bool SaberTrickModel::Init(GlobalNamespace::Saber* saber) {
         _lapizSaber = _saberFactory->Spawn(saber->get_saberType());
-
+        // this wants the original saberModelcontroller as instantiated in sabermodelcontainer, this is ran on start, which is after inject.
+        // this means we have to delay this somehow!
         _originalSaberModel = GetSaberModel(saber);
 
         if (!_originalSaberModel)
@@ -62,8 +65,9 @@ namespace TrickSaber {
         return true;
     }
 
+    // TODO: asyncify like PC
     UnityEngine::GameObject* SaberTrickModel::GetSaberModel(GlobalNamespace::Saber* saber) {
-        auto smc = saber->GetComponentInChildren<GlobalNamespace::SaberModelController*>();
+        auto smc = saber->GetComponentInChildren<GlobalNamespace::SaberModelController*>(true);
         if (smc) return smc->get_gameObject();
         return nullptr;
     }

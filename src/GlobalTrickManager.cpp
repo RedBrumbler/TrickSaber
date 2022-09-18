@@ -9,17 +9,19 @@
 DEFINE_TYPE(TrickSaber, GlobalTrickManager);
 
 namespace TrickSaber {
-    void GlobalTrickManager::ctor(GlobalNamespace::AudioTimeSyncController* audioTimeSyncController, GlobalNamespace::GameplayCoreSceneSetupData* gameplayCoreSceneSetup) {
+    void GlobalTrickManager::ctor(::Zenject::DiContainer* container, GlobalNamespace::AudioTimeSyncController* audioTimeSyncController, GlobalNamespace::GameplayCoreSceneSetupData* gameplayCoreSceneSetup, LeftSaberTrickManager* leftSaberTrickManager, RightSaberTrickManager* rightSaberTrickManager) {
         DEBUG("ctor");
         saberClashCheckerEnabled = true;
 
         _audioTimeSyncController = audioTimeSyncController;
         _iDifficultyBeatmap = gameplayCoreSceneSetup->difficultyBeatmap;
         _slowmoStepAmount = config.slowmoStepAmount;
+        this->leftSaberTrickManager = leftSaberTrickManager;
+        this->rightSaberTrickManager = rightSaberTrickManager;
 
-        _isMultiplayer = multiplayerPlayersManager != nullptr;
+        _isMultiplayer = container->TryResolve<GlobalNamespace::MultiplayerPlayersManager*>();
     }
-
+    
     void GlobalTrickManager::Initialize() {
         if (leftSaberTrickManager) leftSaberTrickManager->Init(this);
         else ERROR("leftSaberTrickManager was null!");

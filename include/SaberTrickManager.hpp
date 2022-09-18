@@ -34,13 +34,14 @@ DECLARE_CLASS_CODEGEN(TrickSaber, SaberTrickManager, UnityEngine::MonoBehaviour,
     DECLARE_PRIVATE_FIELD(GlobalNamespace::VRController*, _vrController);
     DECLARE_PRIVATE_FIELD(GlobalNamespace::Saber*, _saber);
     DECLARE_INSTANCE_FIELD_NAME(GlobalTrickManager*, _globalTrickManager, "TrickSaber", "GlobalTrickManager");
-    DECLARE_INJECT_FIELD_OPTIONAL(GlobalNamespace::PauseController*, _pauseController);
+    DECLARE_INSTANCE_FIELD(GlobalNamespace::PauseController*, _pauseController);
     DECLARE_PRIVATE_FIELD(TrickSaber::MovementController*, _movementController);
     DECLARE_PRIVATE_FIELD(TrickSaber::InputHandling::InputManager*, _inputManager);
     DECLARE_PRIVATE_FIELD(GlobalNamespace::AudioTimeSyncController*, _audioTimeSyncController);
-    DECLARE_PRIVATE_FIELD(TrickSaber::Tricks::TrickFactory*, _trickFactory);
+    DECLARE_PRIVATE_FIELD(TrickSaber::Tricks::TrickCustomFactory*, _trickFactory);
+    DECLARE_PRIVATE_FIELD(::Zenject::DiContainer*, _container);
 
-    DECLARE_INJECT_METHOD(void, Inject, TrickSaber::MovementController* movementController, TrickSaber::InputHandling::InputManager* inputManager, TrickSaber::SaberControllerBearer* saberControllerBearer, GlobalNamespace::SaberType saberType, SaberTrickModel* saberTrickModel, GlobalNamespace::AudioTimeSyncController* audioTimeSyncController, TrickSaber::Tricks::TrickFactory* trickFactory);
+    DECLARE_INJECT_METHOD(void, Inject, Zenject::DiContainer* container, TrickSaber::MovementController* movementController, TrickSaber::InputHandling::InputManager* inputManager, TrickSaber::SaberControllerBearer* saberControllerBearer, GlobalNamespace::SaberType saberType, SaberTrickModel* saberTrickModel, GlobalNamespace::AudioTimeSyncController* audioTimeSyncController/*, TrickSaber::Tricks::TrickCustomFactory* trickFactory*/);
     DECLARE_PRIVATE_METHOD(void, Cleanup);
     DECLARE_PRIVATE_METHOD(void, Update);
     DECLARE_PRIVATE_METHOD(void, OnTrickDeactivated, TrickAction trickAction);

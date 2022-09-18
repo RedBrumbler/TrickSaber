@@ -31,7 +31,7 @@ namespace TrickSaber {
         _managerEnabled = true;
     }
 
-    void SaberTrickManager::Inject(TrickSaber::MovementController* movementController, TrickSaber::InputHandling::InputManager* inputManager, TrickSaber::SaberControllerBearer* saberControllerBearer, GlobalNamespace::SaberType saberType, SaberTrickModel* saberTrickModel, GlobalNamespace::AudioTimeSyncController* audioTimeSyncController, TrickSaber::Tricks::TrickFactory* trickFactory) {
+    void SaberTrickManager::Inject(::Zenject::DiContainer* container, TrickSaber::MovementController* movementController, TrickSaber::InputHandling::InputManager* inputManager, TrickSaber::SaberControllerBearer* saberControllerBearer, GlobalNamespace::SaberType saberType, SaberTrickModel* saberTrickModel, GlobalNamespace::AudioTimeSyncController* audioTimeSyncController/*, TrickSaber::Tricks::TrickCustomFactory* trickFactory*/) {
         _movementController = movementController;
         _inputManager = inputManager;
         _audioTimeSyncController = audioTimeSyncController;
@@ -41,9 +41,12 @@ namespace TrickSaber {
         _saber = saberPackage->saber;
         _vrController = saberPackage->vrController;
 
-        _trickFactory = trickFactory;
+        //_trickFactory = trickFactory;
+        _container = container;
+        _pauseController = container->TryResolve<GlobalNamespace::PauseController*>();
     }
 
+    // TODO: asyncify like PC
     void SaberTrickManager::Init(GlobalTrickManager* globalTrickManager) {
         _globalTrickManager = globalTrickManager;
 
@@ -135,7 +138,8 @@ namespace TrickSaber {
     }
 
     void SaberTrickManager::AddTrick(System::Type* type) {
-        auto trick = _trickFactory->Create(type, get_gameObject());
+        auto trick = reinterpret_cast<Tricks::Trick*>(_container->InstantiateComponent(type, get_gameObject()));
+        //auto trick = _trickFactory->Create(type, get_gameObject());
         trick->Init(this, _movementController);
         trick->trickStarted += {&SaberTrickManager::OnTrickStart, this };
         trick->trickEnding += {&SaberTrickManager::OnTrickEnding, this };

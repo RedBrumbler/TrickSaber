@@ -18,7 +18,7 @@ MAKE_AUTO_HOOK_FIND_INSTANCE(ArgumentNullException_ctor_0, classof(System::Argum
 
 MAKE_AUTO_HOOK_FIND_INSTANCE(ArgumentNullException_ctor_1, classof(System::ArgumentNullException*), ".ctor", void, System::ArgumentNullException* self, StringW paramName) {
     ERROR("Argument Null exception for param {}", paramName);
-    getLogger().Backtrace(123);
+    SAFE_ABORT();
     ArgumentNullException_ctor_1(self, paramName);
 }
 
