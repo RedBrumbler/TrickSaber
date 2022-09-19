@@ -53,6 +53,7 @@ namespace TrickSaber::Tricks {
         _saberModelTransform->set_localRotation(Sombrero::FastQuaternion::identity());
         OnSpinEnd();
     }
+
     void SpinTrick::OnSpinEnd() {
         Reset();
     }
