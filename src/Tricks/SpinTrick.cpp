@@ -20,20 +20,16 @@ namespace TrickSaber::Tricks {
     void SpinTrick::OnInit() {
         _saberModelTransform = _saberTrickModel->get_originalSaberModel()->get_transform();
         _isVelocityDependent = config.isSpeedVelocityDependent;
-
     }
 
     void SpinTrick::OnTrickStart() {
         _largestSpinSpeed = 0;
-        if (_isVelocityDependent)
-        {
+        if (_isVelocityDependent) {
             auto angularVelocity = _movementController->GetAverageAngularVelocity();
             _spinSpeed = std::abs(angularVelocity.x) + std::abs(angularVelocity.y);
             angularVelocity = Sombrero::FastQuaternion::Inverse(_movementController->get_controllerRotation()) * angularVelocity;
             if (angularVelocity.x < 0) _spinSpeed *= -1;
-        }
-        else
-        {
+        } else {
             auto speed = 30;
             if (config.spinDirection == TrickSaber::SpinDir::Backward) speed *= -1;
             _spinSpeed = speed;
@@ -55,6 +51,9 @@ namespace TrickSaber::Tricks {
 
     void SpinTrick::OnTrickEndImmediately() {
         _saberModelTransform->set_localRotation(Sombrero::FastQuaternion::identity());
+        OnSpinEnd();
+    }
+    void SpinTrick::OnSpinEnd() {
         Reset();
     }
 
@@ -70,7 +69,7 @@ namespace TrickSaber::Tricks {
         }
 
         _saberModelTransform->set_localRotation(identityQ);
-        Reset();
+        OnSpinEnd();
         co_return;
     }
 
@@ -94,7 +93,7 @@ namespace TrickSaber::Tricks {
         }
 
         _saberModelTransform->set_localRotation(identityQ);
-        Reset();
+        OnSpinEnd();
         co_return;
     }
 }

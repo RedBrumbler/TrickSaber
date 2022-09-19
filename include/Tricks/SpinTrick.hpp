@@ -15,6 +15,7 @@ DECLARE_CLASS_CUSTOM(TrickSaber::Tricks, SpinTrick, TrickSaber::Tricks::Trick,
     DECLARE_INSTANCE_METHOD(void, OnTrickEndRequested);
     DECLARE_INSTANCE_METHOD(void, OnTrickEndImmediately);
     DECLARE_INSTANCE_METHOD(void, OnInit);
+    DECLARE_INSTANCE_METHOD(void, OnSpinEnd);
 
     DECLARE_INSTANCE_METHOD(void, Update);
     DECLARE_CTOR(ctor);

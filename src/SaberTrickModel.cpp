@@ -1,4 +1,6 @@
 #include "SaberTrickModel.hpp"
+#include "SpinTrickTrailMovement.hpp"
+
 #include "logging.hpp"
 #include "config.hpp"
 
@@ -62,6 +64,7 @@ namespace TrickSaber {
             _lapizSaber->_saber->set_enabled(false);
         }
 
+        saber->get_gameObject()->AddComponent<SpinTrickTrailMovement*>()->Init(saber, _originalSaberModel->GetComponent<GlobalNamespace::SaberModelController*>());
         result = true;
         co_return;
     }
