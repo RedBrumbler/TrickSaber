@@ -16,16 +16,25 @@ namespace TrickSaber {
         Vertical
     };
 
+    std::string ThumbstickDir_toString(const ThumbstickDir& value);
+    ThumbstickDir ThumbstickDir_fromString(const std::string& value);
+
     enum class SpinDir {
         Forward,
         Backward
     };
+
+    std::string SpinDir_toString(const SpinDir& value);
+    SpinDir SpinDir_fromString(const std::string& value);
 
     enum class TrickAction {
         None,
         Throw,
         Spin
     };
+
+    std::string TrickAction_toString(const TrickAction& value);
+    TrickAction TrickAction_fromString(const std::string& value);
 
     enum class TrickState {
         Inactive,
