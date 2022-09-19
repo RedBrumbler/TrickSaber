@@ -7,6 +7,7 @@
 #include "Tricks/ThrowTrick.hpp"
 
 #include "System/Action.hpp"
+#include "GlobalNamespace/SharedCoroutineStarter.hpp"
 
 #include "custom-types/shared/delegate.hpp"
 
@@ -46,17 +47,20 @@ namespace TrickSaber {
         _pauseController = container->TryResolve<GlobalNamespace::PauseController*>();
     }
 
-    // TODO: asyncify like PC
     void SaberTrickManager::Init(GlobalTrickManager* globalTrickManager) {
         _globalTrickManager = globalTrickManager;
+        _inited = false;
+        GlobalNamespace::SharedCoroutineStarter::get_instance()->StartCoroutine(custom_types::Helpers::CoroutineHelper::New(InitAsync()));
+    }
 
+    custom_types::Helpers::Coroutine SaberTrickManager::InitAsync() {
         DEBUG("Instantiated on {}", get_gameObject()->get_name());
 
         if (!_vrController)
         {
             ERROR("Controller not present");
             Cleanup();
-            return;
+            co_return;
         }
 
         if (get_isLeftSaber()) _globalTrickManager->leftSaberTrickManager = reinterpret_cast<LeftSaberTrickManager*>(this);
@@ -68,12 +72,14 @@ namespace TrickSaber {
         _inputManager->trickActivated += { &SaberTrickManager::OnTrickActivated, this };
         _inputManager->trickDeactivated += { &SaberTrickManager::OnTrickDeactivated, this };
 
-        auto success = _saberTrickModel->Init(_saber);
+        auto success = false;
+        co_yield reinterpret_cast<System::Collections::IEnumerator*>(GlobalNamespace::SharedCoroutineStarter::get_instance()->StartCoroutine(custom_types::Helpers::CoroutineHelper::New(_saberTrickModel->Init(_saber, success))));
+
         if (success) INFO("Got saber model");
         else {
             ERROR("Couldn't get saber model");
             Cleanup();
-            return;
+            co_return;
         }
 
         _movementController->set_enabled(true);
@@ -91,13 +97,26 @@ namespace TrickSaber {
         }
 
         INFO("Trick Manager initialized");
+        _inited = true;
+        co_return;
+    }
+    Tricks::Trick* SaberTrickManager::GetTrick(TrickAction trickAction) {
+        union { 
+            Il2CppObject* obj = nullptr;
+            Tricks::Trick* trick;
+        };
+
+        if (_tricks->TryGetValue(trickAction, byref(obj)) && trick && trick->m_CachedPtr.m_value) {
+            return trick;
+        }
+        return nullptr;
     }
 
     void SaberTrickManager::Cleanup() {
         auto values = _tricks->get_Values();
         auto iter = values->GetEnumerator();
         while (iter.MoveNext()) {
-            UnityEngine::Object::DestroyImmediate(iter.get_Current());
+            UnityEngine::Object::DestroyImmediate(reinterpret_cast<Tricks::Trick*>(iter.get_Current()));
         }
         iter.Dispose();
 
@@ -106,18 +125,21 @@ namespace TrickSaber {
     }
 
     void SaberTrickManager::Update() {
+        if (!_inited) return;
         _inputManager->Tick();
     }
 
     void SaberTrickManager::OnTrickDeactivated(TrickAction trickAction) {
-        auto trick = _tricks->get_Item(trickAction);
+        DEBUG("tricks: {}", fmt::ptr(_tricks));
+        auto trick = GetTrick(trickAction);
+        DEBUG("Trick: {}", fmt::ptr(trick));
         if (trick->_trickState != TrickState::Started) return;
         trick->EndTrick();
     }
 
     void SaberTrickManager::OnTrickActivated(TrickAction trickAction, float val) {
         if (!CanDoTrick()) return;
-        auto trick = _tricks->get_Item(trickAction);
+        auto trick = GetTrick(trickAction);
         trick->value = val;
         if (trick->_trickState != TrickState::Inactive) return;
         if (_audioTimeSyncController->get_state() ==
@@ -144,14 +166,13 @@ namespace TrickSaber {
         trick->trickStarted += {&SaberTrickManager::OnTrickStart, this };
         trick->trickEnding += {&SaberTrickManager::OnTrickEnding, this };
         trick->trickEnded += {&SaberTrickManager::OnTrickEnd, this };
+        DEBUG("Adding trick: {1}, trickaction {0}", trick->_trickAction, type->get_Name());
         _tricks->Add(trick->_trickAction, trick);
     }
 
     bool SaberTrickManager::IsTrickInState(TrickAction trickAction, TrickState state) {
-        Tricks::Trick* trick = nullptr;
-        if (_tricks->TryGetValue(trickAction, byref(trick)) && trick) {
-            return trick->_trickState == state;
-        }
+        Tricks::Trick* trick = GetTrick(trickAction);
+        if (trick) return trick->_trickState == state;
         return false;
     }
 
@@ -159,7 +180,7 @@ namespace TrickSaber {
         auto values = _tricks->get_Values();
         auto iter = values->GetEnumerator();
         while (iter.MoveNext()) {
-            if (iter.get_Current()->_trickState != TrickState::Inactive) return true;
+            if (reinterpret_cast<Tricks::Trick*>(iter.get_Current())->_trickState != TrickState::Inactive) return true;
         }
         iter.Dispose();
 
@@ -170,7 +191,7 @@ namespace TrickSaber {
         auto values = _tricks->get_Values();
         auto iter = values->GetEnumerator();
         while (iter.MoveNext()) {
-            iter.get_Current()->OnTrickEndImmediately_base();
+            reinterpret_cast<Tricks::Trick*>(iter.get_Current())->OnTrickEndImmediately_base();
         }
         iter.Dispose();
     }

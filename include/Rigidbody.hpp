@@ -36,31 +36,37 @@ namespace TrickSaber {
 
             bool get_detectCollisions() {
                 using get_detectCollisions_t = function_ptr_t<bool, TrickSaber::Rigidbody*>;
-                static auto get_detectCollisions_f = reinterpret_cast<get_detectCollisions_t>(il2cpp_functions::resolve_icall("UnityEngine.Rigidbody::Get_PropDetectCollisions"));
+                static auto get_detectCollisions_f = reinterpret_cast<get_detectCollisions_t>(il2cpp_functions::resolve_icall("UnityEngine.Rigidbody::get_detectCollisions"));
                 return get_detectCollisions_f(this);
             }
 
             void set_detectCollisions(bool value) {
                 using set_detectCollisions_t = function_ptr_t<void, TrickSaber::Rigidbody*, bool>;
-                static auto set_detectCollisions_f = reinterpret_cast<set_detectCollisions_t>(il2cpp_functions::resolve_icall("UnityEngine.Rigidbody::Set_PropDetectCollisions"));
+                static auto set_detectCollisions_f = reinterpret_cast<set_detectCollisions_t>(il2cpp_functions::resolve_icall("UnityEngine.Rigidbody::set_detectCollisions"));
                 set_detectCollisions_f(this, value);
+            }
+
+            float get_maxAngularVelocity() {
+                using get_maxAngularVelocity_t = function_ptr_t<float, TrickSaber::Rigidbody*>;
+                static auto get_maxAngularVelocity_f = reinterpret_cast<get_maxAngularVelocity_t>(il2cpp_functions::resolve_icall("UnityEngine.Rigidbody::get_maxAngularVelocity"));
+                return get_maxAngularVelocity_f(this);
             }
 
             void set_maxAngularVelocity(float value) {
                 using set_maxAngularVelocity_t = function_ptr_t<void, TrickSaber::Rigidbody*, float>;
-                static auto set_maxAngularVelocity_f = reinterpret_cast<set_maxAngularVelocity_t>(il2cpp_functions::resolve_icall("UnityEngine.Rigidbody::Set_PropMaxAngularVelocity"));
+                static auto set_maxAngularVelocity_f = reinterpret_cast<set_maxAngularVelocity_t>(il2cpp_functions::resolve_icall("UnityEngine.Rigidbody::set_maxAngularVelocity"));
                 set_maxAngularVelocity_f(this, value);
             }
 
             TrickSaber::RigidbodyInterpolation get_interpolation() {
                 using get_interpolation_t = function_ptr_t<TrickSaber::RigidbodyInterpolation, TrickSaber::Rigidbody*>;
-                static auto get_interpolation_f = reinterpret_cast<get_interpolation_t>(il2cpp_functions::resolve_icall("UnityEngine.Rigidbody::Get_PropInterpolation"));
+                static auto get_interpolation_f = reinterpret_cast<get_interpolation_t>(il2cpp_functions::resolve_icall("UnityEngine.Rigidbody::get_interpolation"));
                 return get_interpolation_f(this);
             }
 
             void set_interpolation(TrickSaber::RigidbodyInterpolation value) {
                 using set_interpolation_t = function_ptr_t<void, TrickSaber::Rigidbody*, TrickSaber::RigidbodyInterpolation>;
-                static auto set_interpolation_f = reinterpret_cast<set_interpolation_t>(il2cpp_functions::resolve_icall("UnityEngine.Rigidbody::Set_PropInterpolation"));
+                static auto set_interpolation_f = reinterpret_cast<set_interpolation_t>(il2cpp_functions::resolve_icall("UnityEngine.Rigidbody::set_interpolation"));
                 set_interpolation_f(this, value);
             }
     };

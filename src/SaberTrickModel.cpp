@@ -2,6 +2,9 @@
 #include "logging.hpp"
 #include "config.hpp"
 
+#include "UnityEngine/WaitForSeconds.hpp"
+#include "GlobalNamespace/SharedCoroutineStarter.hpp"
+
 DEFINE_TYPE(TrickSaber, SaberTrickModel);
 
 namespace TrickSaber {
@@ -34,17 +37,15 @@ namespace TrickSaber {
         _rigidbody->set_interpolation(TrickSaber::RigidbodyInterpolation::Interpolate);
     }
 
-    // TODO: asyncify like PC
-    bool SaberTrickModel::Init(GlobalNamespace::Saber* saber) {
+    custom_types::Helpers::Coroutine SaberTrickModel::Init(GlobalNamespace::Saber* saber, bool& result) {
         _lapizSaber = _saberFactory->Spawn(saber->get_saberType());
-        // this wants the original saberModelcontroller as instantiated in sabermodelcontainer, this is ran on start, which is after inject.
-        // this means we have to delay this somehow!
-        _originalSaberModel = GetSaberModel(saber);
+        co_yield reinterpret_cast<System::Collections::IEnumerator*>(GlobalNamespace::SharedCoroutineStarter::get_instance()->StartCoroutine(custom_types::Helpers::CoroutineHelper::New(GetSaberModel(saber, _originalSaberModel))));
 
-        if (!_originalSaberModel)
-        {
+        if (!_originalSaberModel) {
             UnityEngine::Object::DestroyImmediate(_lapizSaber->get_gameObject());
-            return false;
+            result = false;
+            INFO("Couldn't find saber model, destroying trick model!");
+            co_return;
         }
 
         _lapizSaber->SetColor(_colorManager->ColorForSaberType(saber->get_saberType()));
@@ -57,19 +58,36 @@ namespace TrickSaber {
 
         _trickModel->SetActive(false);
 
-        if (!config.hitNotesDuringTrick || _isMultiplayer)
-        {
+        if (!config.hitNotesDuringTrick || _isMultiplayer) {
             _lapizSaber->_saber->set_enabled(false);
         }
 
-        return true;
+        result = true;
+        co_return;
     }
 
-    // TODO: asyncify like PC
-    UnityEngine::GameObject* SaberTrickModel::GetSaberModel(GlobalNamespace::Saber* saber) {
-        auto smc = saber->GetComponentInChildren<GlobalNamespace::SaberModelController*>(true);
-        if (smc) return smc->get_gameObject();
-        return nullptr;
+    custom_types::Helpers::Coroutine SaberTrickModel::GetSaberModel(GlobalNamespace::Saber* saber, UnityEngine::GameObject*& result) {
+        GlobalNamespace::SaberModelController* smc = nullptr; 
+        
+        static constexpr const float timeout = 2.0f;
+        static constexpr const float interval = 0.3f;
+        float time = 0;
+        
+        while (!smc && saber && saber->m_CachedPtr.m_value) {
+            smc = saber->GetComponentInChildren<GlobalNamespace::SaberModelController*>(true);
+            if (smc) {
+                result = smc->get_gameObject();
+                co_return;
+            }
+
+            if (time > timeout) break;
+
+            time += interval;
+            co_yield reinterpret_cast<System::Collections::IEnumerator*>(UnityEngine::WaitForSeconds::New_ctor(interval));
+        }
+
+        result = nullptr;
+        co_return;
     }
 
     TrickSaber::Rigidbody* SaberTrickModel::get_rigidbody() { return _rigidbody; }

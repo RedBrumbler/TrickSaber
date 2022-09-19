@@ -1,6 +1,7 @@
 #pragma once
 
 #include "custom-types/shared/macros.hpp"
+#include "custom-types/shared/coroutine.hpp"
 #include "lapiz/shared/macros.hpp"
 #include "UnityEngine/MonoBehaviour.hpp"
 #include "GlobalNamespace/VRController.hpp"
@@ -22,7 +23,7 @@ namespace TrickSaber {
 }
 
 DECLARE_CLASS_CODEGEN(TrickSaber, SaberTrickManager, UnityEngine::MonoBehaviour,
-    using TrickDictionary = System::Collections::Generic::Dictionary_2<::TrickSaber::TrickAction, ::TrickSaber::Tricks::Trick*>;
+    using TrickDictionary = System::Collections::Generic::Dictionary_2<::TrickSaber::TrickAction, ::Il2CppObject*>;
     DECLARE_PRIVATE_FIELD(TrickDictionary*, _tricks);
     DECLARE_INSTANCE_METHOD(TrickDictionary*, get_tricks);
     DECLARE_PRIVATE_FIELD(SaberTrickModel*, _saberTrickModel);
@@ -40,6 +41,7 @@ DECLARE_CLASS_CODEGEN(TrickSaber, SaberTrickManager, UnityEngine::MonoBehaviour,
     DECLARE_PRIVATE_FIELD(GlobalNamespace::AudioTimeSyncController*, _audioTimeSyncController);
     DECLARE_PRIVATE_FIELD(TrickSaber::Tricks::TrickCustomFactory*, _trickFactory);
     DECLARE_PRIVATE_FIELD(::Zenject::DiContainer*, _container);
+    DECLARE_PRIVATE_FIELD(bool, _inited);
 
     DECLARE_INJECT_METHOD(void, Inject, Zenject::DiContainer* container, TrickSaber::MovementController* movementController, TrickSaber::InputHandling::InputManager* inputManager, TrickSaber::SaberControllerBearer* saberControllerBearer, GlobalNamespace::SaberType saberType, SaberTrickModel* saberTrickModel, GlobalNamespace::AudioTimeSyncController* audioTimeSyncController/*, TrickSaber::Tricks::TrickCustomFactory* trickFactory*/);
     DECLARE_PRIVATE_METHOD(void, Cleanup);
@@ -53,6 +55,7 @@ DECLARE_CLASS_CODEGEN(TrickSaber, SaberTrickManager, UnityEngine::MonoBehaviour,
     DECLARE_INSTANCE_METHOD(bool, IsDoingTrick);
     DECLARE_INSTANCE_METHOD(void, EndAllTricks);
     DECLARE_INSTANCE_METHOD(bool, CanDoTrick);
+    DECLARE_PRIVATE_METHOD(Tricks::Trick*, GetTrick, TrickAction trickAction);
 
     DECLARE_CTOR(ctor);
     public:
@@ -65,6 +68,8 @@ DECLARE_CLASS_CODEGEN(TrickSaber, SaberTrickManager, UnityEngine::MonoBehaviour,
         }
 
         void AddTrick(System::Type* type);
+
+        custom_types::Helpers::Coroutine InitAsync();
 )
 
 // named type because inject with ID is stupid

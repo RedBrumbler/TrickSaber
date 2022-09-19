@@ -1,6 +1,8 @@
 #pragma once
 
 #include "beatsaber-hook/shared/utils/il2cpp-utils.hpp"
+#include <string_view>
+#include <fmt/core.h>
 
 namespace TrickSaber {
     // TODO: define ToString methods for all these
@@ -72,3 +74,65 @@ struct ::il2cpp_utils::il2cpp_type_check::il2cpp_no_arg_class<TrickSaber::TrickA
     }
 };
 static_assert(sizeof(TrickSaber::TrickAction) == sizeof(int));
+
+template <> struct fmt::formatter<::TrickSaber::VRSystem> : formatter<string_view> {
+    // parse is inherited from formatter<string_view>.
+    template <typename FormatContext>
+    auto format(::TrickSaber::VRSystem s, FormatContext& ctx) {
+        switch (s) {
+            case ::TrickSaber::VRSystem::Oculus: return formatter<string_view>::format("Oculus", ctx);
+            case ::TrickSaber::VRSystem::SteamVR: return formatter<string_view>::format("SteamVR", ctx);
+            default: return formatter<string_view>::format("Unknown", ctx);
+        }
+    }
+};
+
+template <> struct fmt::formatter<::TrickSaber::ThumbstickDir> : formatter<string_view> {
+    // parse is inherited from formatter<string_view>.
+    template <typename FormatContext>
+    auto format(::TrickSaber::ThumbstickDir s, FormatContext& ctx) {
+        switch (s) {
+            case ::TrickSaber::ThumbstickDir::Horizontal: return formatter<string_view>::format("Horizontal", ctx);
+            case ::TrickSaber::ThumbstickDir::Vertical: return formatter<string_view>::format("Vertical", ctx);
+            default: return formatter<string_view>::format("Unknown", ctx);
+        }
+    }
+};
+
+template <> struct fmt::formatter<::TrickSaber::SpinDir> : formatter<string_view> {
+    // parse is inherited from formatter<string_view>.
+    template <typename FormatContext>
+    auto format(::TrickSaber::SpinDir s, FormatContext& ctx) {
+        switch (s) {
+            case ::TrickSaber::SpinDir::Forward: return formatter<string_view>::format("Forward", ctx);
+            case ::TrickSaber::SpinDir::Backward: return formatter<string_view>::format("Backward", ctx);
+            default: return formatter<string_view>::format("Unknown", ctx);
+        }
+    }
+};
+
+template <> struct fmt::formatter<::TrickSaber::TrickAction> : formatter<string_view> {
+    // parse is inherited from formatter<string_view>.
+    template <typename FormatContext>
+    auto format(::TrickSaber::TrickAction s, FormatContext& ctx) {
+        switch (s) {
+            case ::TrickSaber::TrickAction::None: return formatter<string_view>::format("None", ctx);
+            case ::TrickSaber::TrickAction::Throw: return formatter<string_view>::format("Throw", ctx);
+            case ::TrickSaber::TrickAction::Spin: return formatter<string_view>::format("Spin", ctx);
+            default: return formatter<string_view>::format("Unknown", ctx);
+        }
+    }
+};
+
+template <> struct fmt::formatter<::TrickSaber::TrickState> : formatter<string_view> {
+    // parse is inherited from formatter<string_view>.
+    template <typename FormatContext>
+    auto format(::TrickSaber::TrickState s, FormatContext& ctx) {
+        switch (s) {
+            case ::TrickSaber::TrickState::Inactive: return formatter<string_view>::format("Inactive", ctx);
+            case ::TrickSaber::TrickState::Started: return formatter<string_view>::format("Started", ctx);
+            case ::TrickSaber::TrickState::Ending: return formatter<string_view>::format("Ending", ctx);
+            default: return formatter<string_view>::format("Unknown", ctx);
+        }
+    }
+};

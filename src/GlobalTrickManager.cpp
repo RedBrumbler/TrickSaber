@@ -31,11 +31,9 @@ namespace TrickSaber {
 
     void GlobalTrickManager::OnTrickStarted(TrickAction trickAction) {
         saberClashCheckerEnabled = false;
-        if (trickAction == TrickAction::Throw && config.slowmoDuringThrow && !_isMultiplayer && !_slowmoApplied)
-        {
+        if (trickAction == TrickAction::Throw && config.slowmoDuringThrow && !_isMultiplayer && !_slowmoApplied) {
             auto timeScale = _audioTimeSyncController->timeScale;
-            if (_endSlowmoCoroutine != nullptr)
-            {
+            if (_endSlowmoCoroutine) {
                 GlobalNamespace::SharedCoroutineStarter::get_instance()->StopCoroutine(_endSlowmoCoroutine);
                 timeScale = _endSlowmoTarget;
             }
