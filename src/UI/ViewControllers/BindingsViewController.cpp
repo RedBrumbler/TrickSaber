@@ -63,24 +63,36 @@ namespace TrickSaber::UI::ViewControllers {
     void BindingsViewController::set_triggerAction(StringW value) { 
         config.triggerAction = TrickAction_fromString(value);
         CheckMultiBinding();
+        SaveConfig();
     }
 
     StringW BindingsViewController::get_gripAction() { return TrickAction_toString(config.gripAction); }
     void BindingsViewController::set_gripAction(StringW value) { 
         config.gripAction = TrickAction_fromString(value);
         CheckMultiBinding();
+        SaveConfig();
     }
 
     StringW BindingsViewController::get_thumbAction() { return TrickAction_toString(config.thumbstickAction); }
     void BindingsViewController::set_thumbAction(StringW value) { 
         config.thumbstickAction = TrickAction_fromString(value); 
         CheckMultiBinding();
+        SaveConfig();
     }
 
     bool BindingsViewController::get_reverseTrigger() { return config.reverseTrigger; }
-    void BindingsViewController::set_reverseTrigger(bool value) { config.reverseTrigger = value;}
+    void BindingsViewController::set_reverseTrigger(bool value) { 
+        config.reverseTrigger = value;
+        SaveConfig();
+    }
     bool BindingsViewController::get_reverseGrip() { return config.reverseGrip; }
-    void BindingsViewController::set_reverseGrip(bool value) { config.reverseGrip = value;}
+    void BindingsViewController::set_reverseGrip(bool value) { 
+        config.reverseGrip = value;
+        SaveConfig();
+    }
     bool BindingsViewController::get_reverseThumbstick() { return config.reverseThumbstick; }
-    void BindingsViewController::set_reverseThumbstick(bool value) { config.reverseThumbstick = value;}
+    void BindingsViewController::set_reverseThumbstick(bool value) { 
+        config.reverseThumbstick = value;
+        SaveConfig();
+    }
 }

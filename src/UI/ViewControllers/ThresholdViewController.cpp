@@ -13,11 +13,23 @@ namespace TrickSaber::UI::ViewControllers {
     }
 
     float ThresholdViewController::get_triggerThresh() { return config.triggerThreshold; }
-    void ThresholdViewController::set_triggerThresh(float value) { config.triggerThreshold = value; }
+    void ThresholdViewController::set_triggerThresh(float value) { 
+        config.triggerThreshold = value;
+        SaveConfig();
+    }
     float ThresholdViewController::get_thumbTresh() { return config.thumbstickThreshold; }
-    void ThresholdViewController::set_thumbTresh(float value) { config.thumbstickThreshold = value; }
+    void ThresholdViewController::set_thumbTresh(float value) { 
+        config.thumbstickThreshold = value;
+        SaveConfig();
+    }
     float ThresholdViewController::get_gripThresh() { return config.gripThreshold; }
-    void ThresholdViewController::set_gripThresh(float value) { config.gripThreshold = value; }
+    void ThresholdViewController::set_gripThresh(float value) { 
+        config.gripThreshold = value;
+        SaveConfig();
+    }
     float ThresholdViewController::get_controllerSnapThresh() { return config.controllerSnapThreshold; }
-    void ThresholdViewController::set_controllerSnapThresh(float value) { config.controllerSnapThreshold = value; }
+    void ThresholdViewController::set_controllerSnapThresh(float value) { 
+        config.controllerSnapThreshold = value;
+        SaveConfig();
+    }
 }

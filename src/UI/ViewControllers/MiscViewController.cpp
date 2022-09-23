@@ -24,21 +24,48 @@ namespace TrickSaber::UI::ViewControllers {
     }
     
     StringW MiscViewController::get_thumbstickDir() { return ThumbstickDir_toString(config.thumbstickDirection); }
-    void MiscViewController::set_thumbstickDir(StringW value) { config.thumbstickDirection = ThumbstickDir_fromString(value); }
+    void MiscViewController::set_thumbstickDir(StringW value) { 
+        config.thumbstickDirection = ThumbstickDir_fromString(value);
+        SaveConfig();
+    }
     bool MiscViewController::get_isSpeedVelocityDependent() { return config.isSpeedVelocityDependent; }
-    void MiscViewController::set_isSpeedVelocityDependent(bool value) { config.isSpeedVelocityDependent = value; }
+    void MiscViewController::set_isSpeedVelocityDependent(bool value) { 
+        config.isSpeedVelocityDependent = value;
+        SaveConfig();
+    }
     float MiscViewController::get_spinSpeed() { return config.spinSpeed; }
-    void MiscViewController::set_spinSpeed(float value) { config.spinSpeed = value; }
+    void MiscViewController::set_spinSpeed(float value) { 
+        config.spinSpeed = value;
+        SaveConfig();
+    }
     StringW MiscViewController::get_spinDir() { return SpinDir_toString(config.spinDirection); }
-    void MiscViewController::set_spinDir(StringW value) { config.spinDirection = SpinDir_fromString(value); }
+    void MiscViewController::set_spinDir(StringW value) { 
+        config.spinDirection = SpinDir_fromString(value);
+        SaveConfig();
+    }
     float MiscViewController::get_throwVelocity() { return config.throwVelocity; }
-    void MiscViewController::set_throwVelocity(float value) { config.throwVelocity = value; }
+    void MiscViewController::set_throwVelocity(float value) { 
+        config.throwVelocity = value;
+        SaveConfig();
+    }
     float MiscViewController::get_returnSpeed() { return config.returnSpeed; }
-    void MiscViewController::set_returnSpeed(float value) { config.returnSpeed = value; }
+    void MiscViewController::set_returnSpeed(float value) { 
+        config.returnSpeed = value;
+        SaveConfig();
+    }
     bool MiscViewController::get_slowmoDuringThrow() { return config.slowmoDuringThrow; }
-    void MiscViewController::set_slowmoDuringThrow(bool value) { config.slowmoDuringThrow = value; }
+    void MiscViewController::set_slowmoDuringThrow(bool value) { 
+        config.slowmoDuringThrow = value;
+        SaveConfig();
+    }
     bool MiscViewController::get_disableIfNotesOnScreen() { return config.disableIfNotesOnScreen; }
-    void MiscViewController::set_disableIfNotesOnScreen(bool value) { config.disableIfNotesOnScreen = value; }
+    void MiscViewController::set_disableIfNotesOnScreen(bool value) { 
+        config.disableIfNotesOnScreen = value;
+        SaveConfig();
+    }
     bool MiscViewController::get_hitNotesDuringTrick() { return config.hitNotesDuringTrick; }
-    void MiscViewController::set_hitNotesDuringTrick(bool value) { config.hitNotesDuringTrick = value; }
+    void MiscViewController::set_hitNotesDuringTrick(bool value) { 
+        config.hitNotesDuringTrick = value;
+        SaveConfig();
+    }
 }

@@ -1,5 +1,6 @@
 #include "logging.hpp"
 #include "hooking.hpp"
+#include "config.hpp"
 
 #include "custom-types/shared/register.hpp"
 #include "lapiz/shared/zenject/Zenjector.hpp"
@@ -18,6 +19,7 @@ extern "C" void setup(ModInfo& info) {
 }
 
 extern "C" void load() {
+    if (!LoadConfig()) SaveConfig();
     il2cpp_functions::Init();
     custom_types::Register::AutoRegister();
     Lapiz::Attributes::AutoRegister();

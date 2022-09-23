@@ -10,24 +10,26 @@
 DEFINE_TYPE(TrickSaber, SaberTrickModel);
 
 namespace TrickSaber {
-    void SaberTrickModel::Inject(::Zenject::DiContainer* container, Lapiz::Sabers::LapizSaberFactory* lapizSaberFactory, Lapiz::Sabers::SaberModelManager* saberModelManager, GlobalNamespace::ColorManager* colorManager) {
-        _saberFactory = lapizSaberFactory;
+    void SaberTrickModel::Inject(::Zenject::DiContainer* container, Lapiz::Sabers::SaberModelManager* saberModelManager) {
         _saberModelManager = saberModelManager;
-        _colorManager = colorManager;
 
         _isMultiplayer = container->TryResolve<GlobalNamespace::MultiplayerPlayersManager*>();
     }
 
     void SaberTrickModel::ChangeToActualSaber() {
-        _originalSaberModel->SetActive(true);
-        _trickModel->SetActive(false);
+        auto modelT = _originalSaberModel->get_transform();
+        modelT->SetParent(_originalParent, true);
+        _rigidbody->set_position({0, 0, 0});
+        _rigidbody->set_rotation(UnityEngine::Quaternion::get_identity());
+        modelT->get_transform()->set_localPosition({0, 0, 0});
+        modelT->get_transform()->set_localRotation(UnityEngine::Quaternion::get_identity());
+        _rigidbody->set_interpolation(TrickSaber::RigidbodyInterpolation::None);
     }
 
     void SaberTrickModel::ChangeToTrickModel() {
-        _trickModel->SetActive(true);
-        _saberTransform->set_position(_originalSaberModel->get_transform()->get_position());
-        _saberTransform->set_rotation(_originalSaberModel->get_transform()->get_rotation());
-        _originalSaberModel->SetActive(false);
+        _originalParent = _originalSaberModel->get_transform()->get_parent();
+        _originalSaberModel->get_transform()->SetParent(nullptr, true);
+        _rigidbody->set_interpolation(TrickSaber::RigidbodyInterpolation::Interpolate);
     }
 
     void SaberTrickModel::AddRigidbody(UnityEngine::GameObject* gameObject) {
@@ -36,35 +38,29 @@ namespace TrickSaber {
         _rigidbody->set_isKinematic(true);
         _rigidbody->set_detectCollisions(false);
         _rigidbody->set_maxAngularVelocity(800);
-        _rigidbody->set_interpolation(TrickSaber::RigidbodyInterpolation::Interpolate);
     }
 
     custom_types::Helpers::Coroutine SaberTrickModel::Init(GlobalNamespace::Saber* saber, bool& result) {
-        _lapizSaber = _saberFactory->Spawn(saber->get_saberType());
         co_yield reinterpret_cast<System::Collections::IEnumerator*>(GlobalNamespace::SharedCoroutineStarter::get_instance()->StartCoroutine(custom_types::Helpers::CoroutineHelper::New(GetSaberModel(saber, _originalSaberModel))));
 
         if (!_originalSaberModel) {
-            UnityEngine::Object::DestroyImmediate(_lapizSaber->get_gameObject());
             result = false;
             INFO("Couldn't find saber model, destroying trick model!");
             co_return;
         }
 
-        _lapizSaber->SetColor(_colorManager->ColorForSaberType(saber->get_saberType()));
+        _trickModel = _originalSaberModel;
+        _saberTransform = saber->get_transform();
 
-        _trickModel = _lapizSaber->get_gameObject();
-        _saberTransform = _lapizSaber->get_transform();
-
-        _trickModel->set_name(fmt::format("TrickModel {}", saber->get_saberType() == GlobalNamespace::SaberType::SaberA ? "SaberA" : "SaberB"));
         AddRigidbody(_trickModel);
 
-        _trickModel->SetActive(false);
-
         if (!config.hitNotesDuringTrick || _isMultiplayer) {
-            _lapizSaber->_saber->set_enabled(false);
+            saber->get_gameObject()->AddComponent<SpinTrickTrailMovement*>()->Init(saber, _originalSaberModel->GetComponent<GlobalNamespace::SaberModelController*>());
+        } else {
+            saber->saberBladeTopTransform->SetParent(_trickModel->get_transform(), true);
+            saber->saberBladeBottomTransform->SetParent(_trickModel->get_transform(), true);
         }
 
-        saber->get_gameObject()->AddComponent<SpinTrickTrailMovement*>()->Init(saber, _originalSaberModel->GetComponent<GlobalNamespace::SaberModelController*>());
         result = true;
         co_return;
     }

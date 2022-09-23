@@ -22,7 +22,6 @@ namespace TrickSaber::UI {
     }
 
     void TrickSaberFlowCoordinator::DidDeactivate(bool removedFromHierarchy, bool screenSystemDisabling) {
-        SaveConfig();
     }
 
     void TrickSaberFlowCoordinator::BackButtonWasPressed(HMUI::ViewController* topViewController) {
