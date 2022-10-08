@@ -5,10 +5,14 @@
 #include "InputHandler.hpp"
 #include "UnityEngine/XR/XRNode.hpp"
 
-DECLARE_CLASS_CUSTOM(TrickSaber::InputHandling, TriggerHandler, TrickSaber::InputHandling::InputHandler,
-    DECLARE_PRIVATE_FIELD(StringW, _inputString);
-    DECLARE_INSTANCE_METHOD(float, GetInputValue);
+#include "UnityEngine/Object.hpp"
 
-    DECLARE_CTOR(ctor, UnityEngine::XR::XRNode node, float threshold, bool isReversed);
+namespace TrickSaber::InputHandling {
+    struct TriggerHandler : public TrickSaber::InputHandling::InputHandler {
+        SafePtr<Il2CppString> _inputString;
 
-)
+        float GetInputValue() const override;
+
+        TriggerHandler(UnityEngine::XR::XRNode node, float threshold, bool isReversed);
+    };
+}

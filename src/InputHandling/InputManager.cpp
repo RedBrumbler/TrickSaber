@@ -15,7 +15,6 @@ DEFINE_TYPE(TrickSaber::InputHandling, InputManager);
 namespace TrickSaber::InputHandling {
     void InputManager::ctor() {
         INVOKE_CTOR();
-        _trickInputHandler = TrickInputHandler::New_ctor();
     }
 
     void InputManager::Init(GlobalNamespace::SaberType saberType, GlobalNamespace::VRControllersInputManager* vrControllersInputManager) {
@@ -37,59 +36,48 @@ namespace TrickSaber::InputHandling {
         auto controllerInputDevice = UnityEngine::XR::InputDevice(getDeviceIdAtXRNode(node), true);
         auto dir = config.thumbstickDirection;
 
-        auto triggerHandler = TriggerHandler::New_ctor(node, config.triggerThreshold, config.reverseTrigger);
-        auto gripHandler = GripHandler::New_ctor(oculusController, controllerInputDevice, config.gripThreshold, config.reverseGrip);
-        auto thumbstickAction = ThumbstickHandler::New_ctor(node, dir, config.thumbstickThreshold, config.reverseThumbstick);
+        auto triggerHandler = new TriggerHandler(node, config.triggerThreshold, config.reverseTrigger);
+        auto gripHandler = new GripHandler(oculusController, controllerInputDevice, config.gripThreshold, config.reverseGrip);
+        auto thumbstickAction = new ThumbstickHandler(node, dir, config.thumbstickThreshold, config.reverseThumbstick);
 
-        _trickInputHandler->Add(config.triggerAction, triggerHandler);
-        _trickInputHandler->Add(config.gripAction, gripHandler);
-        _trickInputHandler->Add(config.thumbstickAction, thumbstickAction);
+        _trickInputHandler.Add(config.triggerAction, std::unique_ptr<InputHandler>(triggerHandler));
+        _trickInputHandler.Add(config.gripAction, std::unique_ptr<InputHandler>(gripHandler));
+        _trickInputHandler.Add(config.thumbstickAction, std::unique_ptr<InputHandler>(thumbstickAction));
     }
 
     // Using ITickable seems to result in GetHandlers returning no handlers (?!?)
     // So we need to manually tick
     void InputManager::Tick() {
-        auto keys = _trickInputHandler->trickHandlerSets->get_Keys();
-        auto iter = keys->GetEnumerator();
-        while (iter.MoveNext()) {
-            auto trickAction = iter.get_Current();
-            auto handlers = _trickInputHandler->GetHandlers(trickAction);
+
+        for (auto const& [trickAction, handlers] : _trickInputHandler.trickHandlerSets) {
             float val = 0.0f;
             if (CheckHandlersDown(handlers, val))
                 trickActivated.invoke(trickAction, val);
             else if (CheckHandlersUp(handlers)) trickDeactivated.invoke(trickAction);
         }
-        iter.Dispose();
     }
 
-    bool InputManager::CheckHandlersDown(TrickInputHandler::TrickHandlerHashSet* handlers, float& val) {
+    bool InputManager::CheckHandlersDown(TrickInputHandler::TrickHandlerHashSet const& handlers, float& val) {
         val = 0;
-        if (handlers->get_Count() == 0) return false;
+        if (handlers.empty()) return false;
         bool output = true;
-        auto iter = handlers->GetEnumerator();
-        while (iter.MoveNext()) {
-            auto handler = iter.get_Current();
+        for (auto const& handler : handlers) {
             float handlerValue = 0.0f;
             output &= handler->Activated(handlerValue);
             val += handlerValue;
         }
-        iter.Dispose();
 
-        if (output) val /= handlers->get_Count();
+        if (output) val /= handlers.size();
 
         return output;
     }
 
-    bool InputManager::CheckHandlersUp(TrickInputHandler::TrickHandlerHashSet* handlers) {
-        auto iter = handlers->GetEnumerator();
-        while (iter.MoveNext()) {
-            auto handler = iter.get_Current();
+    bool InputManager::CheckHandlersUp(TrickInputHandler::TrickHandlerHashSet const&  handlers) {
+        for (auto const& handler : handlers) {
             if (handler->Deactivated()) {
-                iter.Dispose();
                 return true;
             }
         }
-        iter.Dispose();
         return false;
     }
 
