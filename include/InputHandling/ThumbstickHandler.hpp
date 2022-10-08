@@ -10,8 +10,7 @@
 
 namespace TrickSaber::InputHandling {
     struct ThumbstickHandler : public TrickSaber::InputHandling::InputHandler {
-
-        SafePtr<Il2CppString> _inputString;
+        Il2CppString* _inputString;
 
         float GetInputValue() const override;
 

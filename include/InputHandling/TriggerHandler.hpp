@@ -9,7 +9,7 @@
 
 namespace TrickSaber::InputHandling {
     struct TriggerHandler : public TrickSaber::InputHandling::InputHandler {
-        SafePtr<Il2CppString> _inputString;
+        Il2CppString* _inputString;
 
         float GetInputValue() const override;
 

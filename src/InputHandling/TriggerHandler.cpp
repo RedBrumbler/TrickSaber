@@ -2,12 +2,15 @@
 
 #include "UnityEngine/Input.hpp"
 
+ConstString TriggerLeftHand("TriggerLeftHand");
+ConstString TriggerRightHand("TriggerRightHand");
+
 namespace TrickSaber::InputHandling {
-    TriggerHandler::TriggerHandler(UnityEngine::XR::XRNode node, float threshold, bool isReversed) : InputHandler(threshold, isReversed) {
-        _inputString = il2cpp_utils::newcsstr(node == UnityEngine::XR::XRNode::LeftHand ? "TriggerLeftHand" : "TriggerRightHand");
+    TriggerHandler::TriggerHandler(UnityEngine::XR::XRNode node, float threshold, bool isReversed) : InputHandler(threshold, isReversed), _inputString(node == UnityEngine::XR::XRNode::LeftHand ? TriggerLeftHand : TriggerRightHand) {
+        
     }
 
     float TriggerHandler::GetInputValue() const {
-        return UnityEngine::Input::GetAxis(const_cast<Il2CppString*>(_inputString.ptr()));
+        return UnityEngine::Input::GetAxis(_inputString);
     }
 }

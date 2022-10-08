@@ -17,6 +17,6 @@ DECLARE_CLASS_CODEGEN(TrickSaber::InputHandling, InputManager, Il2CppObject,
         UnorderedEventCallback<TrickSaber::TrickAction, float> trickActivated;
         UnorderedEventCallback<TrickSaber::TrickAction> trickDeactivated;
     private:
-        static bool CheckHandlersDown(TrickInputHandler::TrickHandlerHashSet const& handlers, float& val);
-        static bool CheckHandlersUp(TrickInputHandler::TrickHandlerHashSet const& handlers);
+        static bool CheckHandlersDown(const TrickInputHandler::TrickHandlerVector& handlers, float& val);
+        static bool CheckHandlersUp(const TrickInputHandler::TrickHandlerVector& handlers);
 )

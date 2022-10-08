@@ -49,7 +49,7 @@ namespace TrickSaber::InputHandling {
     // So we need to manually tick
     void InputManager::Tick() {
 
-        for (auto const& [trickAction, handlers] : _trickInputHandler.trickHandlerSets) {
+        for (const auto& [trickAction, handlers] : _trickInputHandler.trickHandlerSets) {
             float val = 0.0f;
             if (CheckHandlersDown(handlers, val))
                 trickActivated.invoke(trickAction, val);
@@ -57,11 +57,11 @@ namespace TrickSaber::InputHandling {
         }
     }
 
-    bool InputManager::CheckHandlersDown(TrickInputHandler::TrickHandlerHashSet const& handlers, float& val) {
+    bool InputManager::CheckHandlersDown(const TrickInputHandler::TrickHandlerVector& handlers, float& val) {
         val = 0;
         if (handlers.empty()) return false;
         bool output = true;
-        for (auto const& handler : handlers) {
+        for (const auto& handler : handlers) {
             float handlerValue = 0.0f;
             output &= handler->Activated(handlerValue);
             val += handlerValue;
@@ -72,8 +72,8 @@ namespace TrickSaber::InputHandling {
         return output;
     }
 
-    bool InputManager::CheckHandlersUp(TrickInputHandler::TrickHandlerHashSet const&  handlers) {
-        for (auto const& handler : handlers) {
+    bool InputManager::CheckHandlersUp(const TrickInputHandler::TrickHandlerVector&  handlers) {
+        for (const auto& handler : handlers) {
             if (handler->Deactivated()) {
                 return true;
             }

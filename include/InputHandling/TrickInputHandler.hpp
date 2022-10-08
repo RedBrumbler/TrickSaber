@@ -14,9 +14,9 @@
 namespace TrickSaber::InputHandling {
 
     struct TrickInputHandler {
-        using TrickHandlerHashSet = std::vector<std::unique_ptr<InputHandler>>;
-        using TrickHandlerSetsDictionary = std::unordered_map<TrickAction, TrickHandlerHashSet>;
-        TrickHandlerSetsDictionary trickHandlerSets;
+        using TrickHandlerVector = std::vector<std::unique_ptr<InputHandler>>;
+        using TrickHandlerVectorsMap = std::unordered_map<TrickAction, TrickHandlerVector>;
+        TrickHandlerVectorsMap trickHandlerSets;
 
         TrickInputHandler();
 
@@ -25,6 +25,6 @@ namespace TrickSaber::InputHandling {
         /// \param handler Takes ownership of the pointer
         void Add(TrickSaber::TrickAction action, std::unique_ptr<InputHandler> handler);
 
-        TrickHandlerHashSet *GetHandlers(TrickSaber::TrickAction action);
+        TrickHandlerVector *GetHandlers(TrickSaber::TrickAction action);
     };
 }

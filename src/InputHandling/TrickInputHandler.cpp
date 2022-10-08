@@ -1,7 +1,5 @@
 #include "InputHandling/TrickInputHandler.hpp"
 
-
-
 namespace TrickSaber::InputHandling {
     TrickInputHandler::TrickInputHandler() = default;
 
@@ -9,10 +7,9 @@ namespace TrickSaber::InputHandling {
         if (action == TrickSaber::TrickAction::None) return;
 
         trickHandlerSets[action].emplace_back(std::move(handler));
-
     }
 
-    TrickInputHandler::TrickHandlerHashSet *TrickInputHandler::GetHandlers(TrickSaber::TrickAction action) {
+    TrickInputHandler::TrickHandlerVector *TrickInputHandler::GetHandlers(TrickSaber::TrickAction action) {
         return &trickHandlerSets[action];
     }
 }
