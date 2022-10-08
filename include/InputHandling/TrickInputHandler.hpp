@@ -6,12 +6,25 @@
 #include "Enums.hpp"
 #include "InputHandler.hpp"
 
-DECLARE_CLASS_CODEGEN(TrickSaber::InputHandling, TrickInputHandler, Il2CppObject,
-    using TrickHandlerHashSet = System::Collections::Generic::HashSet_1<InputHandler*>;
-    using TrickHandlerSetsDictionary = System::Collections::Generic::Dictionary_2<TrickSaber::TrickAction, TrickHandlerHashSet*>;
-    DECLARE_INSTANCE_FIELD(TrickHandlerSetsDictionary*, trickHandlerSets);
+#include <unordered_set>
+#include <unordered_map>
 
-    DECLARE_INSTANCE_METHOD(void, Add, TrickSaber::TrickAction action, InputHandler* handler);
-    DECLARE_INSTANCE_METHOD(TrickHandlerHashSet*, GetHandlers, TrickSaber::TrickAction action);
-    DECLARE_CTOR(ctor);
-)
+#include "beatsaber-hook/shared/utils/gc-alloc.hpp"
+
+namespace TrickSaber::InputHandling {
+
+    struct TrickInputHandler {
+        using TrickHandlerVector = std::vector<std::unique_ptr<InputHandler>>;
+        using TrickHandlerVectorsMap = std::unordered_map<TrickAction, TrickHandlerVector>;
+        TrickHandlerVectorsMap trickHandlerSets;
+
+        TrickInputHandler();
+
+        ///
+        /// \param action
+        /// \param handler Takes ownership of the pointer
+        void Add(TrickSaber::TrickAction action, std::unique_ptr<InputHandler> handler);
+
+        TrickHandlerVector *GetHandlers(TrickSaber::TrickAction action);
+    };
+}

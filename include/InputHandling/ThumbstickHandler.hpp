@@ -6,10 +6,16 @@
 #include "UnityEngine/XR/XRNode.hpp"
 #include "Enums.hpp"
 
-DECLARE_CLASS_CUSTOM(TrickSaber::InputHandling, ThumbstickHandler, TrickSaber::InputHandling::InputHandler,
-    DECLARE_PRIVATE_FIELD(StringW, _inputString);
-    DECLARE_INSTANCE_METHOD(float, GetInputValue);
+#include "UnityEngine/Object.hpp"
 
-    DECLARE_CTOR(ctor, UnityEngine::XR::XRNode node, TrickSaber::ThumbstickDir thumbstickDir, float threshold, bool isReversed);
+namespace TrickSaber::InputHandling {
+    struct ThumbstickHandler : public TrickSaber::InputHandling::InputHandler {
+        Il2CppString* _inputString;
 
-)
+        float GetInputValue() const override;
+
+        ThumbstickHandler(
+                UnityEngine::XR::XRNode node, TrickSaber::ThumbstickDir thumbstickDir, float threshold,
+                bool isReversed);
+    };
+}

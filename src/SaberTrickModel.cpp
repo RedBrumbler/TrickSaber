@@ -55,8 +55,12 @@ namespace TrickSaber {
         AddRigidbody(_trickModel);
 
         if (!config.hitNotesDuringTrick || _isMultiplayer) {
+            // Make trails use transforms that are parented to the model rather than the VR controller
+            // This way, scores aren't affected while trails look proper
             saber->get_gameObject()->AddComponent<SpinTrickTrailMovement*>()->Init(saber, _originalSaberModel->GetComponent<GlobalNamespace::SaberModelController*>());
         } else {
+            // Parent transforms to Saber to affect cut collisions
+            // Trails are also fixed by using this
             saber->saberBladeTopTransform->SetParent(_trickModel->get_transform(), true);
             saber->saberBladeBottomTransform->SetParent(_trickModel->get_transform(), true);
         }

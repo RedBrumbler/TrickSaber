@@ -1,28 +1,15 @@
 #include "InputHandling/TrickInputHandler.hpp"
 
-DEFINE_TYPE(TrickSaber::InputHandling, TrickInputHandler);
-
 namespace TrickSaber::InputHandling {
-    void TrickInputHandler::ctor() {
-        trickHandlerSets = TrickHandlerSetsDictionary::New_ctor();
+    TrickInputHandler::TrickInputHandler() = default;
 
-        trickHandlerSets->Add(TrickSaber::TrickAction::Throw, TrickHandlerHashSet::New_ctor());
-        trickHandlerSets->Add(TrickSaber::TrickAction::Spin, TrickHandlerHashSet::New_ctor());
-    }
-    
-    void TrickInputHandler::Add(TrickSaber::TrickAction action, InputHandler* handler) {
+    void TrickInputHandler::Add(TrickSaber::TrickAction action, std::unique_ptr<InputHandler> handler) {
         if (action == TrickSaber::TrickAction::None) return;
-        TrickHandlerHashSet* set = nullptr;
-        if (trickHandlerSets->TryGetValue(action, byref(set))) {
-            set->Add(handler);
-        }
+
+        trickHandlerSets[action].emplace_back(std::move(handler));
     }
 
-    TrickInputHandler::TrickHandlerHashSet* TrickInputHandler::GetHandlers(TrickSaber::TrickAction action) {
-        TrickHandlerHashSet* set = nullptr;
-        if (trickHandlerSets->TryGetValue(action, byref(set))) {
-            return set;
-        }
-        return nullptr;
+    TrickInputHandler::TrickHandlerVector *TrickInputHandler::GetHandlers(TrickSaber::TrickAction action) {
+        return &trickHandlerSets[action];
     }
 }

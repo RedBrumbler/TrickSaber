@@ -1,26 +1,18 @@
 #include "InputHandling/InputHandler.hpp"
 
-DEFINE_TYPE(TrickSaber::InputHandling, InputHandler);
-
 namespace TrickSaber::InputHandling {
-    void InputHandler::ctor(float threshold, bool isReversed) {
-        this->threshold = threshold;
-        this->isReversed = isReversed;
-    }
-    
-    float InputHandler::GetInputValue_base() {
-        return il2cpp_utils::RunMethod<float>(this, "GetInputValue").value_or(0.0f);
-    }
+    InputHandler::InputHandler(float threshold, bool isReversed) :
+            threshold(threshold),
+            isReversed(isReversed), isUpTriggered(false) {}
 
-    float InputHandler::GetActivationValue(float val) {
+    float InputHandler::GetActivationValue(float val) const {
         float value = std::abs(val);
         if (isReversed) return 1.0f - value;
         return value;
     }
 
-    bool InputHandler::Deactivated() {
-        if (GetActivationValue(GetInputValue_base()) < threshold && !isUpTriggered)
-        {
+    bool InputHandler::Deactivated() const {
+        if (GetActivationValue(GetInputValue()) < threshold && !isUpTriggered) {
             isUpTriggered = true;
             return true;
         }
@@ -28,13 +20,12 @@ namespace TrickSaber::InputHandling {
         return false;
     }
 
-    bool InputHandler::Activated(float& val) {
-        auto value = GetInputValue_base();
+    bool InputHandler::Activated(float &val) const {
+        auto value = GetInputValue();
         auto activationValue = GetActivationValue(value);
         val = 0;
 
-        if (activationValue > threshold)
-        {
+        if (activationValue > threshold) {
             val = isReversed ? activationValue : value;
             isUpTriggered = false;
             return true;
@@ -42,6 +33,4 @@ namespace TrickSaber::InputHandling {
 
         return false;
     }
-
-
 }

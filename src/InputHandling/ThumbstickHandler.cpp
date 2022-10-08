@@ -3,19 +3,21 @@
 
 #include "UnityEngine/Input.hpp"
 
-DEFINE_TYPE(TrickSaber::InputHandling, ThumbstickHandler);
+ConstString HorizontalLeftHand("HorizontalLeftHand");
+ConstString HorizontalRightHand("HorizontalRightHand");
+ConstString VerticalLeftHand("VerticalLeftHand");
+ConstString VerticalRightHand("VerticalRightHand");
 
 namespace TrickSaber::InputHandling {
-    void ThumbstickHandler::ctor(UnityEngine::XR::XRNode node, TrickSaber::ThumbstickDir thumbstickDir, float threshold, bool isReversed) {
-        static auto base = classof(InputHandler*);
-        INVOKE_BASE_CTOR(base, threshold, isReversed);
-        _inputString = fmt::format("{}{}",
-            thumbstickDir == TrickSaber::ThumbstickDir::Horizontal ? "Horizontal" : "Vertical",
-            node == UnityEngine::XR::XRNode::LeftHand ? "LeftHand" : "RightHand"
-        );
-    }
+    ThumbstickHandler::ThumbstickHandler(UnityEngine::XR::XRNode node, TrickSaber::ThumbstickDir thumbstickDir, float threshold, bool isReversed) : InputHandler(threshold, isReversed), 
+    _inputString(
+        thumbstickDir == TrickSaber::ThumbstickDir::Horizontal 
+        ? (node == UnityEngine::XR::XRNode::LeftHand ? HorizontalLeftHand : HorizontalRightHand) 
+        : (node == UnityEngine::XR::XRNode::LeftHand ? VerticalLeftHand : VerticalRightHand)
+    )
+    {}
 
-    float ThumbstickHandler::GetInputValue() {
+    float ThumbstickHandler::GetInputValue() const {
         return UnityEngine::Input::GetAxis(_inputString);
     }
 }

@@ -2,17 +2,20 @@
 
 #include "custom-types/shared/macros.hpp"
 
-DECLARE_CLASS_CODEGEN(TrickSaber::InputHandling, InputHandler, Il2CppObject,
-    DECLARE_INSTANCE_FIELD(bool, isUpTriggered);
-    DECLARE_INSTANCE_FIELD(float, threshold);
-    DECLARE_INSTANCE_FIELD(bool, isReversed);
+namespace TrickSaber::InputHandling {
+    struct InputHandler {
+        InputHandler(float threshold, bool isReversed);
+        InputHandler(InputHandler&&) = default; // move by default
+        virtual ~InputHandler() = default;
 
-    DECLARE_INSTANCE_METHOD(float, GetInputValue_base);
-    DECLARE_INSTANCE_METHOD(float, GetActivationValue, float val);
-    DECLARE_INSTANCE_METHOD(bool, Deactivated);
+        float threshold;
+        bool isReversed;
+        mutable bool isUpTriggered;
 
-    DECLARE_CTOR(ctor, float threshold, bool isReversed);
-    public:
-        bool Activated(float& val);
+        [[nodiscard]] virtual float GetInputValue() const = 0;
+        [[nodiscard]] float GetActivationValue(float val) const;
+        [[nodiscard]] bool Deactivated() const;
+        [[nodiscard]] bool Activated(float &val) const;
 
-)
+    };
+}

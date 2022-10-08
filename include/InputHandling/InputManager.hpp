@@ -8,7 +8,7 @@
 #include "System/Collections/Generic/HashSet_1.hpp"
 
 DECLARE_CLASS_CODEGEN(TrickSaber::InputHandling, InputManager, Il2CppObject,
-    DECLARE_PRIVATE_FIELD(TrickInputHandler*, _trickInputHandler);
+    TrickInputHandler _trickInputHandler;
 
     DECLARE_CTOR(ctor);
     DECLARE_INSTANCE_METHOD(void, Init, GlobalNamespace::SaberType saberType, GlobalNamespace::VRControllersInputManager* vrControllersInputManager);
@@ -17,6 +17,6 @@ DECLARE_CLASS_CODEGEN(TrickSaber::InputHandling, InputManager, Il2CppObject,
         UnorderedEventCallback<TrickSaber::TrickAction, float> trickActivated;
         UnorderedEventCallback<TrickSaber::TrickAction> trickDeactivated;
     private:
-        bool CheckHandlersDown(TrickInputHandler::TrickHandlerHashSet* handlers, float& val);
-        bool CheckHandlersUp(TrickInputHandler::TrickHandlerHashSet* handlers);
+        static bool CheckHandlersDown(const TrickInputHandler::TrickHandlerVector& handlers, float& val);
+        static bool CheckHandlersUp(const TrickInputHandler::TrickHandlerVector& handlers);
 )
