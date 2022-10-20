@@ -1,6 +1,6 @@
 ﻿<vertical child-control-height='false'>
   <horizontal ignore-layout='true' anchor-pos-x='-70' anchor-pos-y='30' horizontal-fit='PreferredSize' vertical-fit='PreferredSize'>
-    <image preserve-aspect='true' preferred-width='15' source='TrickSaber.Resources.LogoSmall.png'></image>
+    <image preserve-aspect='true' preferred-width='15' source='TrickSaber_logosmall_png'></image>
   </horizontal>
   
   <horizontal bg='panel-top' pad-left='10' pad-right='10' horizontal-fit='PreferredSize'>

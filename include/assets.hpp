@@ -44,6 +44,7 @@ struct IncludedAsset {
 namespace IncludedAssets {
 
 	DECLARE_FILE(BindingsView_bsml)
+	DECLARE_FILE(LogoSmall_png)
 	DECLARE_FILE(MiscView_bsml)
 	DECLARE_FILE(ThresholdView_bsml)
 

@@ -22,7 +22,7 @@
     },
     {
       "id": "codegen",
-      "versionRange": "^0.27.0",
+      "versionRange": "^0.28.0",
       "additionalData": {}
     },
     {
@@ -42,7 +42,7 @@
     },
     {
       "id": "lapiz",
-      "versionRange": "^0.1.3",
+      "versionRange": "^0.1.4",
       "additionalData": {}
     },
     {
@@ -53,6 +53,11 @@
     {
       "id": "bsml",
       "versionRange": "^0.2.0",
+      "additionalData": {}
+    },
+    {
+      "id": "bs-utils",
+      "versionRange": "^0.7.2",
       "additionalData": {}
     }
   ],

@@ -12,6 +12,9 @@
 
 #include "System/ArgumentNullException.hpp"
 
+#include "bsml/shared/BSMLDataCache.hpp"
+#include "assets.hpp"
+
 ModInfo modInfo{MOD_ID, VERSION};
 
 extern "C" void setup(ModInfo& info) {
@@ -30,4 +33,8 @@ extern "C" void load() {
     zenjector->Install<TrickSaber::Installers::AppInstaller*>(Lapiz::Zenject::Location::App);
     zenjector->Install<TrickSaber::Installers::MenuInstaller*>(Lapiz::Zenject::Location::Menu);
     zenjector->Install<TrickSaber::Installers::GameInstaller*>(Lapiz::Zenject::Location::StandardPlayer);
+}
+
+BSML_DATACACHE(logosmall_png) {
+    return IncludedAssets::LogoSmall_png;
 }
