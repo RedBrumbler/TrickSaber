@@ -1,6 +1,6 @@
 ﻿<scrollable-settings-container id="scrollable" xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
                                xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
-	<list-setting text='Thumbstick direction' value='thumbDir' options='dirEnum' apply-on-change='true'
+	<list-setting text='Thumbstick direction' value='thumbstickDir' options='dirEnum' apply-on-change='true'
 	              hover-hint='In which direction do I need to move the thumbstick to spin you saber' />
 	<checkbox-setting text='Is spin speed velocity dependent' value='isSpeedVelocityDependent'
 	                  apply-on-change='true'
