@@ -43,7 +43,10 @@ namespace TrickSaber {
     }
 
     void GameplayManager::Initialize() {
-        DisableScoreSubmissionIfNeeded();
+        if (config.trickSaberEnabled) DisableScoreSubmissionIfNeeded();
+        // if TS not enabled, just allow scores
+        else DisableScore(false, "");
+
         CreateCheckBox();
     }
 
@@ -65,8 +68,10 @@ namespace TrickSaber {
         toggleSetting->set_Value(config.trickSaberEnabled);
         auto delegate = custom_types::MakeDelegate<UnityEngine::Events::UnityAction_1<bool>*>(
             std::function<void(bool)>(
-                [](bool value){
+                [&](bool value){
                     config.trickSaberEnabled = value;
+                    // we never enable scores DURING gameplay, only ever disabling it. the only way to have allowed scores is if you start with TS disabled
+                    DisableScoreSubmissionIfNeeded();
                 }
             )
         );
