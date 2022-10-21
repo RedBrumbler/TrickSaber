@@ -30,7 +30,7 @@ namespace TrickSaber {
     }
 
     void GameplayManager::DisableScoreSubmissionIfNeeded() {
-        DisableScore(config.slowmoDuringThrow || config.hitNotesDuringTrick, fmt::format("slowmoDuringThro: {}, hitNotesDuringTrick: {}", config.slowmoDuringThrow, config.hitNotesDuringTrick));
+        DisableScore(config.slowmoDuringThrow || config.hitNotesDuringTrick, fmt::format("slowmoDuringThrow: {}, hitNotesDuringTrick: {}", config.slowmoDuringThrow, config.hitNotesDuringTrick));
     }
 
     void GameplayManager::DisableScore(bool disable, StringW reason) {
@@ -51,6 +51,8 @@ namespace TrickSaber {
     }
 
     void GameplayManager::CreateCheckBox() {
+        // disabling for now as it just breaks the mod if used lol
+        return;
         if (!_pauseMenuManager || !_pauseMenuManager->m_CachedPtr.m_value) return;
 
         auto canvas = _pauseMenuManager->levelBar->get_transform()->get_parent()->get_parent()->GetComponent<UnityEngine::Canvas*>();
