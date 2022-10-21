@@ -17,8 +17,8 @@ namespace TrickSaber::UI::ViewControllers {
         config.triggerThreshold = value;
         SaveConfig();
     }
-    float ThresholdViewController::get_thumbTresh() { return config.thumbstickThreshold; }
-    void ThresholdViewController::set_thumbTresh(float value) { 
+    float ThresholdViewController::get_thumbThresh() { return config.thumbstickThreshold; }
+    void ThresholdViewController::set_thumbThresh(float value) { 
         config.thumbstickThreshold = value;
         SaveConfig();
     }

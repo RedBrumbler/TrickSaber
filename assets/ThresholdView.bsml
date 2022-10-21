@@ -7,7 +7,7 @@
     <increment-setting text='Trigger threshold' value='triggerThresh' min='0.05' max='0.95' increment='0.05'
                        integer-only='false' apply-on-change='true'
                        hover-hint='How much do I need to press the trigger to throw the saber' />
-    <increment-setting text='Grip threshold' value='tripThresh' min='0.05' max='0.95' increment='0.05'
+    <increment-setting text='Grip threshold' value='gripThresh' min='0.05' max='0.95' increment='0.05'
                        integer-only='false' apply-on-change='true'
                        hover-hint='How much do I need to press the grip to throw the saber' />
     <increment-setting text='Thumbstick threshold' value='thumbThresh' min='0.05' max='0.95' increment='0.05'
