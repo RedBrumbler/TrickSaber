@@ -11,12 +11,16 @@
 #include "GlobalNamespace/AudioTimeSyncController.hpp"
 #include "GlobalNamespace/IDifficultyBeatmap.hpp"
 #include "GlobalNamespace/NoteController.hpp"
+#include "System/IDisposable.hpp"
 
 #include "SaberTrickManager.hpp"
 
 #include "Zenject/IInitializable.hpp"
 
-DECLARE_CLASS_CODEGEN_INTERFACES(TrickSaber, GlobalTrickManager, Il2CppObject, classof(::Zenject::IInitializable*),
+#define INTERFACES { classof(::Zenject::IInitializable*), classof(::System::IDisposable*) }
+
+___DECLARE_TYPE_WRAPPER_INHERITANCE(TrickSaber, GlobalTrickManager, Il2CppTypeEnum::IL2CPP_TYPE_CLASS, Il2CppObject, "TrickSaber", INTERFACES, 0, nullptr,
+    DECLARE_PRIVATE_FIELD(UnityEngine::Coroutine*, _noteTimer);
     DECLARE_PRIVATE_FIELD(UnityEngine::AudioSource*, _audioSource);
     DECLARE_INSTANCE_METHOD(UnityEngine::AudioSource*, get_audioSource);
 
@@ -40,6 +44,7 @@ DECLARE_CLASS_CODEGEN_INTERFACES(TrickSaber, GlobalTrickManager, Il2CppObject, c
     DECLARE_PRIVATE_FIELD(float, _timeSinceLastNote);
 
     DECLARE_OVERRIDE_METHOD(void, Initialize, il2cpp_utils::il2cpp_type_check::MetadataGetter<&::Zenject::IInitializable::Initialize>::get()); 
+    DECLARE_OVERRIDE_METHOD(void, Dispose, il2cpp_utils::il2cpp_type_check::MetadataGetter<&::System::IDisposable::Dispose>::get()); 
     DECLARE_INSTANCE_METHOD(void, OnTrickStarted, TrickAction trickAction);
     DECLARE_INSTANCE_METHOD(void, OnTrickEndRequested, TrickAction trickAction);
     DECLARE_INSTANCE_METHOD(void, OnTrickEnded, TrickAction trickAction);

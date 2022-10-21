@@ -2,9 +2,14 @@
 #include "config.hpp"
 #include "logging.hpp"
 
+#include "bsml/shared/Helpers/delegates.hpp"
+
 #include "UnityEngine/Time.hpp"
+#include "UnityEngine/Resources.hpp"
 #include "UnityEngine/WaitForFixedUpdate.hpp"
 #include "GlobalNamespace/SharedCoroutineStarter.hpp"
+#include "GlobalNamespace/ScoreController.hpp"
+#include "GlobalNamespace/BeatmapObjectManager.hpp"
 
 DEFINE_TYPE(TrickSaber, GlobalTrickManager);
 
@@ -27,7 +32,18 @@ namespace TrickSaber {
         else ERROR("leftSaberTrickManager was null!");
         if (rightSaberTrickManager) rightSaberTrickManager->Init(this);
         else ERROR("leftSaberTrickManager was null!");
+
+        auto scoreController = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::ScoreController*>().FirstOrDefault();
+        auto delegate = BSML::MakeSystemAction<GlobalNamespace::NoteController*>(this, ___OnNoteWasSpawned_MethodRegistrator.info);
+        scoreController->beatmapObjectManager->add_noteWasSpawnedEvent(delegate);
+        if (config.disableIfNotesOnScreen) _noteTimer = GlobalNamespace::SharedCoroutineStarter::get_instance()->StartCoroutine(custom_types::Helpers::new_coro(NoteSpawnTimer()));
     } 
+
+    void GlobalTrickManager::Dispose() {
+        if (_noteTimer) {
+            GlobalNamespace::SharedCoroutineStarter::get_instance()->StopCoroutine(_noteTimer);
+        }
+    }
 
     void GlobalTrickManager::OnTrickStarted(TrickAction trickAction) {
         saberClashCheckerEnabled = false;
