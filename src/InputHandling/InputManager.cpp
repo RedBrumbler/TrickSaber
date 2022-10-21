@@ -3,6 +3,7 @@
 #include "InputHandling/GripHandler.hpp"
 #include "InputHandling/ThumbstickHandler.hpp"
 #include "config.hpp"
+#include "logging.hpp"
 
 #include "GlobalNamespace/OVRInput.hpp"
 #include "UnityEngine/XR/XRNode.hpp"
@@ -35,7 +36,6 @@ namespace TrickSaber::InputHandling {
         static auto getDeviceIdAtXRNode = reinterpret_cast<GetDeviceIdAtXRNode>(il2cpp_functions::resolve_icall("UnityEngine.XR.InputTracking::GetDeviceIdAtXRNode"));
         auto controllerInputDevice = UnityEngine::XR::InputDevice(getDeviceIdAtXRNode(node), true);
         auto dir = config.thumbstickDirection;
-
         auto triggerHandler = new TriggerHandler(node, config.triggerThreshold, config.reverseTrigger);
         auto gripHandler = new GripHandler(oculusController, controllerInputDevice, config.gripThreshold, config.reverseGrip);
         auto thumbstickAction = new ThumbstickHandler(node, dir, config.thumbstickThreshold, config.reverseThumbstick);
@@ -48,12 +48,12 @@ namespace TrickSaber::InputHandling {
     // Using ITickable seems to result in GetHandlers returning no handlers (?!?)
     // So we need to manually tick
     void InputManager::Tick() {
-
         for (const auto& [trickAction, handlers] : _trickInputHandler.trickHandlerSets) {
             float val = 0.0f;
             if (CheckHandlersDown(handlers, val))
                 trickActivated.invoke(trickAction, val);
-            else if (CheckHandlersUp(handlers)) trickDeactivated.invoke(trickAction);
+            else if (CheckHandlersUp(handlers)) 
+                trickDeactivated.invoke(trickAction);
         }
     }
 
