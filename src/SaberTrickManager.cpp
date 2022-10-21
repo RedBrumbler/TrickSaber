@@ -138,7 +138,7 @@ namespace TrickSaber {
     }
 
     void SaberTrickManager::OnTrickActivated(TrickAction trickAction, float val) {
-        if (!CanDoTrick()) return;
+        if (!CanDoTrick() || _globalTrickManager->IsDoingTrick()) return;
         auto trick = GetTrick(trickAction);
         trick->value = val;
         if (trick->_trickState != TrickState::Inactive) return;
