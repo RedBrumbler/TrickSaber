@@ -15,6 +15,7 @@ DECLARE_CLASS_CODEGEN(TrickSaber::UI::ViewControllers, MiscViewController, HMUI:
     BSML_OPTIONS_LIST_OBJECT(spinDirEnum, "Forward", "Backward");
     BSML_OPTIONS_LIST_OBJECT(dirEnum, "Horizontal", "Vertical");
 
+    DECLARE_BSML_PROPERTY(bool, trickSaberEnabled);
     DECLARE_BSML_PROPERTY(StringW, thumbstickDir);
     DECLARE_BSML_PROPERTY(bool, isSpeedVelocityDependent);
     DECLARE_BSML_PROPERTY(float, spinSpeed);

@@ -22,7 +22,12 @@ namespace TrickSaber::UI::ViewControllers {
             rect->set_sizeDelta({-4, -4});
         }
     }
-    
+
+    bool MiscViewController::get_trickSaberEnabled() { return config.trickSaberEnabled; }
+    void MiscViewController::set_trickSaberEnabled(bool value) { 
+        config.trickSaberEnabled = value;
+        SaveConfig();
+    }
     StringW MiscViewController::get_thumbstickDir() { return ThumbstickDir_toString(config.thumbstickDirection); }
     void MiscViewController::set_thumbstickDir(StringW value) { 
         config.thumbstickDirection = ThumbstickDir_fromString(value);
