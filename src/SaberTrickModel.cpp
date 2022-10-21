@@ -17,6 +17,7 @@ namespace TrickSaber {
     }
 
     void SaberTrickModel::ChangeToActualSaber() {
+        if (!_originalParent || !_originalParent->m_CachedPtr.m_value) return;
         auto modelT = _originalSaberModel->get_transform();
         modelT->SetParent(_originalParent, true);
         _rigidbody->set_position({0, 0, 0});
