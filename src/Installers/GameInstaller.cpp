@@ -21,11 +21,24 @@
 #include "Zenject/InjectUtil.hpp"
 #include "System/Func_2.hpp"
 
+// condep from libreplay.so
+#include "conditional-dependencies/shared/main.hpp"
+std::optional<bool> IsInReplay() {
+    static auto function = CondDeps::Find<bool>("replay", "IsInReplay");
+    if (function)
+        return function.value()();
+    return std::nullopt;
+}
+
 DEFINE_TYPE(TrickSaber::Installers, GameInstaller);
 
 namespace TrickSaber::Installers {
     void GameInstaller::InstallBindings() {
         DEBUG("InstallBindings");
+        if (IsInReplay().value_or(false)) {
+            return;
+        }
+
         auto container = get_Container();
 
         container->BindInterfacesAndSelfTo<GameplayManager*>()->AsSingle();
@@ -41,7 +54,6 @@ namespace TrickSaber::Installers {
         BindTrickManager(GlobalNamespace::SaberType::SaberB);
 
         container->Bind<SaberTrickModel*>()->AsTransient();
-
     }
 
     void GameInstaller::BindTrickManager(GlobalNamespace::SaberType saberType) {
