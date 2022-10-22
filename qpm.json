@@ -4,8 +4,8 @@
   "info": {
     "name": "Trick Saber",
     "id": "trick-saber",
-    "version": "0.1.0",
-    "url": null,
+    "version": "0.0.1",
+    "url": "https://github.com/RedBrumbler/TrickSaber",
     "additionalData": {
       "overrideSoName": "libtrick-saber.so"
     }
