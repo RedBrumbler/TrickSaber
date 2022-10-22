@@ -10,15 +10,15 @@
   <horizontal ignore-layout='true' anchor-pos-x='-70' anchor-pos-y='24' horizontal-fit='PreferredSize' vertical-fit='PreferredSize'>
     <text text='~version' font-size='4' font-color='#FFFFFF66'/>
   </horizontal>
-  <horizontal ignore-layout='true' anchor-pos-x='-50' anchor-pos-y='-30' horizontal-fit='PreferredSize' vertical-fit='PreferredSize'>
+  <!--<horizontal ignore-layout='true' anchor-pos-x='-50' anchor-pos-y='-30' horizontal-fit='PreferredSize' vertical-fit='PreferredSize'>
     <text text='More settings in TrickSaber.json' font-size='4.5' font-color='#FFFFFF44'/>
-  </horizontal>
+  </horizontal>-->
   <horizontal ignore-layout='true' anchor-pos-x='0' anchor-pos-y='-30' horizontal-fit='PreferredSize' vertical-fit='PreferredSize' active='~newerVersionAvailable'>
     <text text='~newerVersionText' font-size='3.5' font-color='#28e06677'/>
   </horizontal>
-  <horizontal ignore-layout='true' anchor-pos-x='50' anchor-pos-y='-30' horizontal-fit='PreferredSize' vertical-fit='PreferredSize'>
+  <!--<horizontal ignore-layout='true' anchor-pos-x='50' anchor-pos-y='-30' horizontal-fit='PreferredSize' vertical-fit='PreferredSize'>
     <text text='~contactInfo' font-size='4.5' font-color='#FFFFFF44'/>
-  </horizontal>
+  </horizontal>-->
   <horizontal id='multiBindingTextLayout' ignore-layout='true' active='~multiBindingTextActive' anchor-pos-x='0' anchor-pos-y='24' horizontal-fit='PreferredSize' vertical-fit='PreferredSize'>
     <text text='Multi Binding active' id='MultiBindingText' font-size='4.5' font-color='#e86113ff' hover-hint='You have set two inputs to the same Action, in order to perform this Action you have to press the two inputs simultaneously'/>
   </horizontal>
