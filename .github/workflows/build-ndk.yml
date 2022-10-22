@@ -31,6 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+    - uses: FranzDiebold/github-env-vars-action@v2
     - uses: actions/checkout@v2
       name: Checkout
       with:
@@ -114,5 +115,5 @@ jobs:
         webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
         content: "${{ env.CI_SHA_SHORT }} - `${{ github.event.head_commit.message }}`"
         username: "${{ github.repository }}"
-        avatar-url: "http://github.com/${{ env.CI_REPOSITORY_OWNER }}.png"
+        avatar-url: "http://github.com/${{ env.CI_ACTOR }}.png"
         filename: ./${{ env.qmodName }}.qmod
