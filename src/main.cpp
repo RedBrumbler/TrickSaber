@@ -7,7 +7,6 @@
 #include "lapiz/shared/AttributeRegistration.hpp"
 
 #include "Installers/GameInstaller.hpp"
-#include "Installers/AppInstaller.hpp"
 #include "Installers/MenuInstaller.hpp"
 
 #include "System/ArgumentNullException.hpp"
@@ -30,7 +29,6 @@ extern "C" void load() {
     Hooks::InstallHooks(getLogger());
 
     auto zenjector = Lapiz::Zenject::Zenjector::Get();
-    zenjector->Install<TrickSaber::Installers::AppInstaller*>(Lapiz::Zenject::Location::App);
     zenjector->Install<TrickSaber::Installers::MenuInstaller*>(Lapiz::Zenject::Location::Menu);
     zenjector->Install<TrickSaber::Installers::GameInstaller*>(Lapiz::Zenject::Location::StandardPlayer);
 }
