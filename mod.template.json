@@ -5,7 +5,7 @@
     "author": "RedBrumbler",
     "version": "${version}",
     "packageId": "com.beatgames.beatsaber",
-    "packageVersion": "1.25.1",
+    "packageVersion": "1.27.0_3631150051",
     "coverImage": "cover.png",
     "description": "Mod that lets you throw and spin your sabers every which way you want!",
     "dependencies": [],
