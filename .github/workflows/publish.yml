@@ -40,7 +40,7 @@ jobs:
     - name: Put QPM on path
       run: |
         chmod +x ./QPM/qpm-rust
-        export PATH=${GITHUB_WORKSPACE}/QPM:$PATH
+        echo "${GITHUB_WORKSPACE}/QPM" >> $GITHUB_PATH
 
     - name: QPM Collapse
       run: |
