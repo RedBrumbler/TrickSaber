@@ -86,15 +86,11 @@ jobs:
         echo cache:
         ls -la $HOME/.local/share/QPM-Rust/cache
       
-    - name: Build
+    - name: Build & Create Qmod
       run: |
         cd ${GITHUB_WORKSPACE}
         ./QPM/qpm-rust qmod build
-        pwsh -Command ./build.ps1
-
-    - name: Create Qmod
-      run: |
-        pwsh -Command ./createqmod.ps1 ${{env.qmodName}}
+        ./QPM/qpm-rust s qmod
 
     - name: Get Library Name
       id: libname
