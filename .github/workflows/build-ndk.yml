@@ -54,11 +54,15 @@ jobs:
         name: linux-qpm-rust
         path: QPM
         repo: QuestPackageManager/QPM.CLI
-        
-    - name: QPM Collapse
+
+    - name: Put QPM on path
       run: |
         chmod +x ./QPM/qpm-rust
-        ./QPM/qpm-rust collapse
+        export PATH=${GITHUB_WORKSPACE}/QPM:$PATH
+
+    - name: QPM Collapse
+      run: |
+        qpm-rust collapse
     
     - name: QPM Dependencies Cache
       id: cache-qpm-deps
@@ -75,7 +79,7 @@ jobs:
 
     - name: QPM Restore
       run: |
-        ./QPM/qpm-rust restore
+        qpm-rust restore
 
     - name: List Post Restore
       run: |
@@ -89,8 +93,8 @@ jobs:
     - name: Build & Create Qmod
       run: |
         cd ${GITHUB_WORKSPACE}
-        ./QPM/qpm-rust qmod build
-        ./QPM/qpm-rust s qmod
+        qpm-rust qmod build
+        qpm-rust s qmod
 
     - name: Get Library Name
       id: libname
